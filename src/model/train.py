@@ -32,9 +32,12 @@ def main(args):
         # train model
         model = train_model(args.reg_rate, X_train, y_train)
 
+        model.score(X_test, y_test)
+
         # evaluate model and log metrics§
         y_pred = model.predict(X_test)
         acc = accuracy_score(y_test, y_pred)
+        print(f"Model accuracy: {acc}")
         mlflow.log_metric("accuracy", acc)
         
 
@@ -57,7 +60,7 @@ def split_data(df, test_size=0.30):
 
 def train_model(reg_rate, X_train, y_train):
     # train model
-    model = LogisticRegression(C=1/reg_rate, solver="liblinear").fit(X_train, y_train)
+    model = LogisticRegression(C=1/reg_rate, solver="liblinear")
     model.fit(X_train, y_train)
     return model
 
