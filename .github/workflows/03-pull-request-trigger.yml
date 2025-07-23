@@ -14,16 +14,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'  # or your preferred version
+        python-version: '3.12'  # or your preferred version
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip==24.0
         pip install -r requirements.txt
         pip install pytest ruff
 
-    - name: Run tests with pytest
-      run: pytest tests/
+        - name: Run tests with pytest
+          run: pytest tests/
 
-    - name: Run lint checks with ruff
-      run: ruff check .
+        - name: Run lint checks with ruff
+          run: ruff check .
