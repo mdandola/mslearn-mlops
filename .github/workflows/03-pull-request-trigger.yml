@@ -1,27 +1,29 @@
-name: Pull Request Trigger
+name: Pull Request Checks
 
 on:
   pull_request:
 
 jobs:
-  run-tests:
+  test-and-lint:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out repo
+    - name: Check out repository
       uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'  # or whatever version your project uses
+        python-version: '3.8'  # or your preferred version
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pytest
+        pip install pytest ruff
 
-    - name: Run tests
-      run: |
-        pytest tests/
+    - name: Run tests with pytest
+      run: pytest tests/
+
+    - name: Run lint checks with ruff
+      run: ruff check .
