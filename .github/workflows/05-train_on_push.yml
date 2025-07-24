@@ -30,7 +30,7 @@ jobs:
         run: |
           JOB_INFO=$(az ml job create \
             --file src/job.yml \
-            --set inputs.training_data=azureml:diabetes-dev-folder@latest \
+            --input training_data=azureml:diabetes-dev-folder@latest \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.AZURE_WORKSPACE_NAME }} \
             --query "{name:name}" -o json)
@@ -77,7 +77,7 @@ jobs:
         run: |
           az ml job create \
             --file src/job.yml \
-            --set inputs.training_data=azureml:diabetes-prod-folder@latest \
+            --input inputs.training_data=azureml:diabetes-prod-folder@latest \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --workspace-name ${{ secrets.AZURE_WORKSPACE_NAME }}
 
