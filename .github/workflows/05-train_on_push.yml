@@ -41,7 +41,11 @@ jobs:
           STATUS="Queued"
           while [[ "$STATUS" == "Queued" || "$STATUS" == "NotStarted" || "$STATUS" == "Running" ]]; do
             sleep 20
-            STATUS=$(az ml job show --name ${{ steps.submit-dev.outputs.job_name }} --query "status" -o tsv)
+            STATUS=$(az ml job show \
+              --name ${{ steps.submit-dev.outputs.job_name }} \
+              --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+              --workspace-name ${{ secrets.AZURE_WORKSPACE_NAME }} \
+              --query "status" -o tsv)
             echo "Current status: $STATUS"
           done
           if [[ "$STATUS" != "Completed" ]]; then
