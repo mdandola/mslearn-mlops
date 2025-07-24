@@ -28,8 +28,11 @@ jobs:
       - name: Submit dev job
         id: submit-dev
         run: |
-          JOB_INFO=$(az ml job create --file src/job.yml \
+          JOB_INFO=$(az ml job create \
+            --file src/job.yml \
             --set inputs.training_data=azureml:diabetes-dev-folder@latest \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.AZURE_WORKSPACE_NAME }} \
             --query "{name:name}" -o json)
           echo "job_name=$(echo $JOB_INFO | jq -r .name)" >> $GITHUB_OUTPUT
 
@@ -68,5 +71,8 @@ jobs:
 
       - name: Submit prod job
         run: |
-          az ml job create --file src/job.yml \
-            --set inputs.training_data=azureml:diabetes-prod-folder@latest
+          az ml job create \
+            --file src/job.yml \
+            --set inputs.training_data=azureml:diabetes-prod-folder@latest \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --workspace-name ${{ secrets.AZURE_WORKSPACE_NAME }}
