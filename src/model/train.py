@@ -41,15 +41,17 @@ def main(args):
         mlflow.log_metric("accuracy", acc)
         
 
-
-
 def get_csvs_df(path):
+    print(f"Received training_data path: {path}")
     if not os.path.exists(path):
         raise RuntimeError(f"Cannot use non-existent path provided: {path}")
-    csv_files = glob.glob(f"{path}/*.csv")
+
+    csv_files = glob.glob(os.path.join(path, "*.csv"))
     if not csv_files:
-        raise RuntimeError(f"No CSV files found in provided data path: {path}")
-    return pd.concat((pd.read_csv(f) for f in csv_files), sort=False)
+        raise RuntimeError("No CSV files found in provided data")
+
+    df_list = [pd.read_csv(file) for file in csv_files]
+    return pd.concat(df_list, ignore_index=True)
 
 
 # function to split data
